@@ -1,0 +1,6 @@
+{
+  "name": "youtube-test",
+  "short_name": "youtube-test",
+  "start_url": "/",
+  "display": "standalone"
+}

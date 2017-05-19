@@ -1,0 +1,145 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/google-youtube/google-youtube.html">
+<link rel="import" href="../../bower_components/font-roboto/roboto.html">
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-styles/classes/typography.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
+
+<dom-module id="youtube-test-app">
+  <template>
+    <style is="custom-style" include="iron-flex iron-flex-alignment iron-flex-factors iron-positioning"></style>
+    <style>
+      :host {
+        display: block;
+        min-height: 100vh;
+        @apply(--layout-vertical);
+        @apply(--layout-center-center);
+        background-color: #141414;
+        font-family: "Roboto";
+        color: white;
+      }
+      google-youtube{
+        margin: 8px;
+        box-sizing: border-box;
+        background-color: #212121;
+      }
+      paper-button{
+        background-color: #212121;
+        color: white;
+        padding: 8px 16px;
+      }
+      span{
+        margin-left: 8px;
+      }
+      #buttons{
+        margin-top: 16px;
+      }
+    </style>
+    <div class="layout horizontal center">
+
+      <google-youtube
+        autoplay
+        id="test0"
+        video-id="[[arrayTest.0]]"
+        height="540px"
+        width="960px"
+        state="{{state}}"
+        currenttime="{{currentTime}}">
+      </google-youtube>
+
+      <div>
+        <span class="paper-font-headline">More cameras</span>
+        <google-youtube
+          autoplay
+          volume="0"
+          controls="0"
+          id="test1"
+          video-id="[[arrayTest.1]]"
+          height="240px"
+          width="426px"
+          state="{{state}}">
+        </google-youtube>
+        <google-youtube
+          autoplay
+          volume="0"
+          controls="0"
+          id="test2"
+          video-id="[[arrayTest.2]]"
+          height="240px"
+          width="426px"
+          state="{{state}}">
+        </google-youtube>
+      </div>
+
+    </div>
+
+    <div id="buttons" class="layout horizontal">
+      <paper-button id="camera1" raised class="paper-font-button" on-tap="_changeCamera">Camera 1</paper-button>
+      <paper-button id="camera2" raised class="paper-font-button" on-tap="_changeCamera">Camera 2</paper-button>
+      <paper-button id="camera3" raised class="paper-font-button" on-tap="_changeCamera">Camera 3</paper-button>
+    </div>
+
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'youtube-test-app',
+
+      properties: {
+        currentTime:{
+          type: Number,
+          value: 0,
+          observer: "_syncVideos"
+        },
+        arrayTest:{
+          type: Array,
+          value: [
+            "937mTDgX0b8",
+            "7UjHdw_oDB4",
+            "HQnC1UHBvWA"
+          ]
+        }
+      },
+
+      _syncVideos: function (value) {
+        this.$.test1.seekTo(value);
+        this.$.test2.seekTo(value);
+        this.$.test1.mute();
+        this.$.test2.mute();
+      },
+
+      _changeCamera: function (e) {
+        var selectedCamera = e.target.id;
+        switch (selectedCamera) {
+          case "camera1":
+            this.arrayTest = [
+              "937mTDgX0b8",
+              "7UjHdw_oDB4",
+              "HQnC1UHBvWA"
+            ];
+            break;
+          case "camera2":
+            this.arrayTest = [
+              "HQnC1UHBvWA",
+              "937mTDgX0b8",
+              "7UjHdw_oDB4"
+            ];
+            break;
+          case "camera3":
+            this.arrayTest = [
+              "7UjHdw_oDB4",
+              "HQnC1UHBvWA",
+              "937mTDgX0b8"
+            ];
+            break;
+        }
+        this.$.test0.play();
+        this.$.test1.play();
+        this.$.test2.play();
+      }
+
+    });
+  </script>
+</dom-module>
